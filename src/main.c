@@ -6,14 +6,14 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 16:06:23 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/28 16:45:48 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/28 21:54:04 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "str.h"
 #include "pipex.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
 	if (argc <= 4)
 	{
@@ -30,6 +30,6 @@ int	main(int argc, char **argv)
 		run_heredoc(argc, argv);
 	}
 	else
-		run_pipex(argc, argv);
+		run_pipex(argc, argv, env);
 	return (0);
 }

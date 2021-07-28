@@ -6,13 +6,13 @@
 #    By: ngerrets <ngerrets@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/15 14:47:03 by ngerrets      #+#    #+#                  #
-#    Updated: 2021/07/28 16:43:28 by ngerrets      ########   odam.nl          #
+#    Updated: 2021/07/28 22:02:17 by ngerrets      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 # For now this is the default Makefile I use for C projects
 # Manually edit:
-NAME ?= pipex
+NAME := pipex
 COMPILE_FLAGS ?= -Wall -Wextra
 LINKING_FLAGS ?=
 LIBRARIES ?=
