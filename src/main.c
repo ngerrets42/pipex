@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 16:06:23 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 15:28:43 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 16:03:22 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	main(int argc, char **argv, char **env)
 {
 	if (argc <= 4)
 	{
-		ft_putstr_fd("Pipex needs at least 4 args.", FD_STDOUT);
+		ft_putstr_fd("Pipex needs at least 4 args.\n", STDERR_FILENO);
 		return (1);
 	}
 	if (str_is_str(argv[1], "here_doc"))
 	{
 		if (argc <= 5)
 		{
-			ft_putstr_fd("Need at least 5 args with here_doc", FD_STDOUT);
+			ft_putstr_fd("Need at least 5 args with here_doc\n", STDERR_FILENO);
 			return (1);
 		}
 		//run_heredoc(argc, argv);

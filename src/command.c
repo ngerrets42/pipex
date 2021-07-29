@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 22:32:10 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 15:27:12 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 15:57:08 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,14 @@ static void	duptwo(int fd1, int fd2)
 
 static void	do_child(int input, int output, char **cmd, char **env)
 {
+	char	*path_to_bin;
+
 	duptwo(input, STDIN_FILENO);
 	duptwo(output, STDOUT_FILENO);
-	if (execve(cmd[0], cmd, env) < 0)
+	path_to_bin = get_path(cmd, env);
+	if (path_to_bin == NULL)
+		throw_error("Command not found.\n");
+	if (execve(path_to_bin, cmd, env) < 0)
 		throw_error(NULL);
 }
 
