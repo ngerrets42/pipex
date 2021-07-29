@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 22:32:10 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/28 23:19:09 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 12:39:21 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_command	*command_create(void)
 	command->fd[FD_OUT] = 0;
 	command->args = NULL;
 	command->next = NULL;
+	command->pid = -1;
 	return (command);
 }
 
@@ -42,27 +43,27 @@ static void	pipe_connect(int *in, int *out)
 	*out = fd[1];
 }
 
-t_command	*command_chain(int argc, char **argv)
+//pipex infile->cmd1->cmd2->cmd3->outfile
+//  0      1     2     3      4      5     6
+t_command	*command_chain(int argc, char **argv, int fd_std[2])
 {
 	t_command	*initial_command;
 	t_command	*current_command;
 	int			i;
 
 	current_command = command_create();
+	current_command->args = ft_split(argv[2], ' ');
 	initial_command = current_command;
-	initial_command->fd[FD_IN] = open(argv[1], O_RDONLY);
-	i = 2;
+	i = 3;
 	while (i < argc - 1)
 	{
 		current_command->next = command_create();
 		pipe_connect(&current_command->fd[FD_OUT],
 			&current_command->next->fd[FD_IN]);
-		current_command->args = ft_split(argv[i], ' ');
+		current_command->next->args = ft_split(argv[i], ' ');
 		current_command = current_command->next;
 		i++;
 	}
-	current_command->fd[FD_OUT] = open(argv[argc - 1], O_WRONLY);
-	current_command->args = ft_split("END", ' ');
 	return (initial_command);
 }
 

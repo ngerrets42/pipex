@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/07/28 16:26:21 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/28 23:07:02 by ngerrets      ########   odam.nl         */
+/*   Created: 2021/07/29 12:47:32 by ngerrets      #+#    #+#                 */
+/*   Updated: 2021/07/29 14:12:01 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 #include <unistd.h>
 #include "str.h"
 #include "sys/wait.h"
-#include "command.h"
-
 #include <stdlib.h>
+#include <stdio.h>
+
+# define READ 0
+# define WRITE 1
 
 char	**env_get(char **env)
 {
@@ -28,74 +30,79 @@ char	**env_get(char **env)
 	return (stored_env);
 }
 
-static int	is_child(int pid)
+void	do_parent(int i, int pid, int argc, int pipe_prev[2], int pipe_curr[2])
 {
-	return (pid == 0);
-}
-
-static int	fork_create(void)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid < 0)
-		throw_error(NULL);
-	return (pid);
-}
-
-static void	fork_handle(int *fd, int fd_inout, char *arg_str)
-{
-	char	**args;
-	char	*path_to_bin;
-
-	args = ft_split(arg_str, ' ');
-	path_to_bin = args[0];
-	if (access(path_to_bin, F_OK | X_OK) < 0)
-		throw_error("Access denied.");
-	if (fd_inout == FD_STDIN)
+	printf("Doing parent... i = %d\n", i);
+	if (i == 0)
+		close(pipe_prev[WRITE]);
+	else if (i == argc - 4)
 	{
-		if (dup2(fd[0], FD_STDIN) < 0)
-			throw_error("Dup2 failed.");
+		close(pipe_prev[READ]);
 	}
-	else if (fd_inout == FD_STDOUT)
+	else
 	{
-		if (dup2(fd[1], FD_STDOUT) < 0)
-			throw_error("Dup2 failed.");
+		close(pipe_prev[READ]);
+		close(pipe_curr[WRITE]);
 	}
-	close(fd[0]);
-	close(fd[1]);
-	if (execve(path_to_bin, args, env_get(NULL)) < 0)
-		throw_error(NULL);
+	while(wait(NULL) > 0);
 }
 
-void	forked(int index, char **argv)
+void	do_child(int i, int argc, int pipe_prev[2], int pipe_curr[2], char **cmd)
 {
-	int		pid[2];
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-		throw_error(NULL);
-	pid[0] = fork_create();
-	if (is_child(pid[0]))
-		fork_handle(fd, FD_STDOUT, argv[index]);
-	index++;
-	pid[1] = fork_create();
-	if (is_child(pid[1]))
-		fork_handle(fd, FD_STDIN, argv[index]);
-	close(fd[0]);
-	close(fd[1]);
-	if (waitpid(pid[0], NULL, 0) < 0)
-		throw_error(NULL);
-	if (waitpid(pid[1], NULL, 0) < 0)
-		throw_error(NULL);
+	printf("Doing child... i = %d\n", i);
+	if (i == 0)
+	{
+		printf("STDOUT to current pipe WRITE\n");
+		dup2(pipe_prev[WRITE], STDOUT_FILENO);
+	}
+	else if (i == argc - 4)
+	{
+		printf("STDIN to current pipe READ\n");
+		dup2(pipe_prev[READ], STDIN_FILENO);
+	}
+	else
+	{
+		dup2(pipe_prev[READ], STDIN_FILENO);
+		dup2(pipe_curr[WRITE], STDOUT_FILENO);
+	}
+	if (execve(cmd[0], cmd, env_get(NULL)) < 0)
+		throw_error("Something went wrong");
 }
 
 void	run_pipex(int argc, char **argv, char **env)
 {
-	//int	fd_in;
-	//int	fd_out;
-
+	int	pid;
+	int	pipe_prev[2];
+	int	pipe_curr[2];
+	int	i;
+	char	**cmd;
+	
 	env_get(env);
-	//forked(2, argv);
-	command_print(command_chain(argc, argv));
+	i = 0;
+	while (i < argc - 3)
+	{
+		if (i == 0)
+		{
+			pipe(pipe_prev);
+		}
+		else if (i < argc - 4)
+		{
+			pipe(pipe_curr);
+		}
+		cmd = ft_split(argv[2 + i], ' ');
+		pid = fork();
+		if (pid < 0)
+			throw_error(NULL);
+		else if (pid == 0)
+			do_child(i, argc, pipe_prev, pipe_curr, cmd);
+		else
+			do_parent(i, pid, argc, pipe_prev, pipe_curr);
+		if (i > 0)
+		{
+			pipe_prev[0] = pipe_curr[0];
+			pipe_prev[1] = pipe_curr[1];
+		}
+		i++;
+	}
+	printf("Done!\n");
 }
