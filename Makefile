@@ -6,7 +6,7 @@
 #    By: ngerrets <ngerrets@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/15 14:47:03 by ngerrets      #+#    #+#                  #
-#    Updated: 2021/07/29 17:55:24 by ngerrets      ########   odam.nl          #
+#    Updated: 2021/07/29 19:05:32 by ngerrets      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 # Manually edit:
 NAME := pipex
 COMPILE_FLAGS ?= -Wall -Wextra
-LINKING_FLAGS ?=
+LINKING_FLAGS ?= -Llib/get_next_line -lgnl
 LIBRARIES ?=
 SOURCE_DIRECTORY ?= src
 HEADER_DIRECTORY ?= include
@@ -28,7 +28,10 @@ OBJECTS := $(patsubst $(SOURCE_DIRECTORY)/%,$(OBJECTS_DIRECTORY)/%,$(SOURCES:.c=
 INCLUDES := $(patsubst %,-I%,$(dir $(HEADERS)))
 
 # Default make-rule. Compile and link files.
-all: $(BINARIES_DIRECTORY)/$(NAME)
+all: dependencies $(BINARIES_DIRECTORY)/$(NAME)
+
+dependencies:
+	$(MAKE) -C lib/get_next_line
 
 # Link files
 $(BINARIES_DIRECTORY)/$(NAME): $(BINARIES_DIRECTORY) $(HEADERS) $(OBJECTS)
@@ -47,9 +50,12 @@ $(OBJECTS_DIRECTORY)/%.o: $(SOURCE_DIRECTORY)/%.c $(HEADERS)
 	@$(CC) $(COMPILE_FLAGS) $(INCLUDES) -c -o $@ $<
 
 # Clean objects
-clean:
+clean: cleandeps
 	@rm -Rf $(OBJECTS_DIRECTORY)
 	@echo "Objects cleaned."
+
+cleandeps:
+	$(MAKE) -C lib/get_next_line clean
 
 # Clean objects and binaries
 fclean: clean
