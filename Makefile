@@ -6,7 +6,7 @@
 #    By: ngerrets <ngerrets@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/15 14:47:03 by ngerrets      #+#    #+#                  #
-#    Updated: 2021/07/28 22:02:17 by ngerrets      ########   odam.nl          #
+#    Updated: 2021/07/29 17:55:24 by ngerrets      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ all: $(BINARIES_DIRECTORY)/$(NAME)
 # Link files
 $(BINARIES_DIRECTORY)/$(NAME): $(BINARIES_DIRECTORY) $(HEADERS) $(OBJECTS)
 	@echo "\nLinking files..."
-	@$(CC) $(LINKING_FLAGS) $(OBJECTS) -o $(BINARIES_DIRECTORY)/$(NAME)
+	@$(CC) $(OBJECTS) -o $(BINARIES_DIRECTORY)/$(NAME) $(LINKING_FLAGS)
 	@echo "Done!"
 
 # Create binaries directory
