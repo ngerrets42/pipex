@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 16:06:23 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/28 21:54:04 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 15:28:43 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	main(int argc, char **argv, char **env)
 			ft_putstr_fd("Need at least 5 args with here_doc", FD_STDOUT);
 			return (1);
 		}
-		run_heredoc(argc, argv);
+		//run_heredoc(argc, argv);
 	}
 	else
-		run_pipex(argc, argv, env);
+		pipex(argc, argv, env);
 	return (0);
 }

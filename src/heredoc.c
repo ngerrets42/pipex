@@ -6,13 +6,8 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 16:27:08 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/28 16:27:31 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 15:27:49 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	run_heredoc(int argc, char **argv)
-{
-	
-}
