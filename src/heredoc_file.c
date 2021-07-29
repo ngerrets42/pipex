@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 19:28:10 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 20:17:37 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 20:46:07 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ char	*heredoc_get_fname(void)
 {
 	char	*fname;
 
-	fname = HEREDOC_NAME;
-	if (access(fname, F_OK) == 0)
+	fname = ft_strjoin(HEREDOC_NAME, "0");
+	while (access(fname, F_OK) == 0)
 	{
-		if (unlink(fname) != 0)
-			throw_error("Heredoc already exists and can't be removed.\n");
+		if (ft_strlen(fname) > 50)
+			throw_error("Error - Too many heredocs.");
+		fname = ft_strjoin(fname, "0");
 	}
 	return (fname);
 }
