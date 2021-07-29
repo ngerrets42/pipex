@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 18:52:43 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 19:56:27 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 21:00:31 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,7 @@ void	heredoc(int argc, char **argv, char **env)
 		pipes[PREVIOUS][P_WRITE] = pipes[CURRENT][P_WRITE];
 		i++;
 	}
+	while (wait(NULL) > 0)
+		;
 	heredoc_delete(fname);
 }

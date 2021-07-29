@@ -6,17 +6,16 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 22:32:10 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 15:57:08 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 21:01:23 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	do_parent(int input, int output, int pid)
+static void	do_parent(int input, int output)
 {
 	close(input);
 	close(output);
-	waitpid(pid, NULL, 0);
 }
 
 static void	duptwo(int fd1, int fd2)
@@ -48,5 +47,5 @@ void	run_command(int io[2], char **cmd, char **env)
 	else if (pid == 0)
 		do_child(io[P_READ], io[P_WRITE], cmd, env);
 	else
-		do_parent(io[P_READ], io[P_WRITE], pid);
+		do_parent(io[P_READ], io[P_WRITE]);
 }

@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 12:47:32 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 19:56:41 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/07/29 20:56:11 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,6 @@ void	pipex(int argc, char **argv, char **env)
 		pipes[PREVIOUS][P_WRITE] = pipes[CURRENT][P_WRITE];
 		i++;
 	}
+	while (wait(NULL) == 0)
+		;
 }
