@@ -1,4 +1,5 @@
 pipex
 *.o
+*.a
 objects/
 .vscode
