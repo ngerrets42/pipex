@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/28 16:25:13 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 19:58:33 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/08/03 17:30:29 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@
 # define PREVIOUS 0
 # define CURRENT 1
 # define HEREDOC_NAME ".heredoc_"
+
+# ifndef BONUS
+#  define BONUS 0
+# endif
 
 void	pipex(int argc, char **argv, char **env);
 char	*get_path(char **cmd, char **env);
