@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 12:47:32 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 20:56:11 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/08/11 12:04:04 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	get_output(int i, int argc, char **argv, int pipes[2][2])
 
 	if (i == argc - 4)
 	{
-		fd = open(argv[argc - 1], O_CREAT |O_WRONLY,
+		fd = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC,
 				S_IRUSR | S_IWUSR);
 		if (fd < 0)
 			throw_error(NULL);
