@@ -6,19 +6,26 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 19:28:10 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 20:46:07 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/08/18 12:49:59 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "../lib/get_next_line/get_next_line.h"
 
+/*
+**	Delete (unlink) the temporary heredoc file
+*/
 void	heredoc_delete(char *fname)
 {
 	if (unlink(fname) != 0)
 		throw_error(NULL);
 }
 
+/*
+**	Find a good filename for the temporary heredoc file. This is required if
+**	multiple instances of pipex are running in the same directory.
+*/
 char	*heredoc_get_fname(void)
 {
 	char	*fname;
@@ -33,6 +40,9 @@ char	*heredoc_get_fname(void)
 	return (fname);
 }
 
+/*
+**	Write a temporary heredoc file from STDIN.
+*/
 void	heredoc_write(char *fname, char *delimiter)
 {
 	int		ret;

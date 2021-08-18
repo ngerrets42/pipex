@@ -6,12 +6,16 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 18:52:43 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/07/29 21:00:31 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/08/18 12:47:14 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*
+**	Returns the filedescriptor for the input. opens a file if i equals 0.
+**	i is the iteration, only the first (i == 0) reads from the input file.
+*/
 static int	get_input(int i, int pipes[2][2], char *fname)
 {
 	int	fd;
@@ -26,6 +30,10 @@ static int	get_input(int i, int pipes[2][2], char *fname)
 	return (pipes[PREVIOUS][P_READ]);
 }
 
+/*
+**	Returns the filescriptor for the output. Opens a file if i equals argc - 5.
+**	i is the iteration, only the last (i == argc - 5) opens the output file.
+*/
 static int	get_output(int i, int argc, char **argv, int pipes[2][2])
 {
 	int	fd;
@@ -41,6 +49,11 @@ static int	get_output(int i, int argc, char **argv, int pipes[2][2])
 	return (pipes[CURRENT][P_WRITE]);
 }
 
+/*
+**	heredoc is very similar to the pipex function, it however first creates a
+**	temporary heredoc file to write to before using this file as the input. it
+**	deletes the temporary file after the function is completed.
+*/
 void	heredoc(int argc, char **argv, char **env)
 {
 	int		pipes[2][2];

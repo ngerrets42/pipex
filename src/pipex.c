@@ -6,12 +6,16 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 12:47:32 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/08/11 12:04:04 by ngerrets      ########   odam.nl         */
+/*   Updated: 2021/08/18 12:56:34 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*
+**	Returns the filedescriptor for the input. opens a file if i equals 0.
+**	i is the iteration, only the first (i == 0) reads from the input file.
+*/
 static int	get_input(int i, char **argv, int pipes[2][2])
 {
 	int	fd;
@@ -26,6 +30,10 @@ static int	get_input(int i, char **argv, int pipes[2][2])
 	return (pipes[PREVIOUS][P_READ]);
 }
 
+/*
+**	Returns the filescriptor for the output. Opens a file if i equals argc - 4.
+**	i is the iteration, only the last (i == argc - 4) opens the output file.
+*/
 static int	get_output(int i, int argc, char **argv, int pipes[2][2])
 {
 	int	fd;
@@ -41,6 +49,12 @@ static int	get_output(int i, int argc, char **argv, int pipes[2][2])
 	return (pipes[CURRENT][P_WRITE]);
 }
 
+/*
+**	This is where the magic happens. Creates two pipes and uses them to chain
+**	through the commands, "piping" them together and executing them. The pipes
+**	switch places with every iteration (CURRENT becomes PREVIOUS). At the end
+**	wait for all child processes.
+*/
 void	pipex(int argc, char **argv, char **env)
 {
 	int		pipes[2][2];
