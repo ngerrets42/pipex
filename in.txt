@@ -1,3 +1,5 @@
 1 hello this is a file
 2 with multiple lines
 3 yay! Hello! Hi!
+
+5 Line 4 was empty!

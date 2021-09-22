@@ -1,3 +1,0 @@
-1 hello this is a file
-2 with multiple lines
-3 yay! Hello! Hi!
