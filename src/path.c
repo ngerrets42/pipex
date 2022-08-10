@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 15:35:39 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/08/18 12:52:47 by ngerrets      ########   odam.nl         */
+/*   Updated: 2022/08/10 14:47:11 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static char	*get_env(char **env, char *var)
 }
 
 /*
+**	First check the direct path, if not found go through the ENV PATH.
 **	Get the PATH environment variable and search through the indicated
 **	directories for an executable cmd, then return the path to this command.
 */
@@ -38,6 +39,8 @@ char	*get_path(char **cmd, char **env)
 	char	*var;
 	char	**directories;
 
+	if (access(cmd[0], F_OK | X_OK) == 0)
+		return (cmd[0]);
 	var = get_env(env, "PATH");
 	if (var == NULL)
 		throw_error("Something is wrong with the environment variables!\n");
