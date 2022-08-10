@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 12:47:32 by ngerrets      #+#    #+#                 */
-/*   Updated: 2021/08/18 12:56:34 by ngerrets      ########   odam.nl         */
+/*   Updated: 2022/08/10 15:29:21 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,19 @@ static int	get_output(int i, int argc, char **argv, int pipes[2][2])
 	return (pipes[CURRENT][P_WRITE]);
 }
 
+static void	free_split(char **cmd)
+{
+	size_t	i;
+
+	i = 0;
+	while (cmd[i] != NULL)
+	{
+		free(cmd[i]);
+		i++;
+	}
+	free(cmd);
+}
+
 /*
 **	This is where the magic happens. Creates two pipes and uses them to chain
 **	through the commands, "piping" them together and executing them. The pipes
@@ -71,6 +84,7 @@ void	pipex(int argc, char **argv, char **env)
 		io[P_READ] = get_input(i, argv, pipes);
 		io[P_WRITE] = get_output(i, argc, argv, pipes);
 		run_command(io, cmd, env);
+		free_split(cmd);
 		pipes[PREVIOUS][P_READ] = pipes[CURRENT][P_READ];
 		pipes[PREVIOUS][P_WRITE] = pipes[CURRENT][P_WRITE];
 		i++;

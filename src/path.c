@@ -6,7 +6,7 @@
 /*   By: ngerrets <ngerrets@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/07/29 15:35:39 by ngerrets      #+#    #+#                 */
-/*   Updated: 2022/08/10 14:47:11 by ngerrets      ########   odam.nl         */
+/*   Updated: 2022/08/10 15:19:20 by ngerrets      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*get_path(char **cmd, char **env)
 {
 	char	*var;
 	char	**directories;
+	int		i;
 
 	if (access(cmd[0], F_OK | X_OK) == 0)
 		return (cmd[0]);
@@ -45,12 +46,15 @@ char	*get_path(char **cmd, char **env)
 	if (var == NULL)
 		throw_error("Something is wrong with the environment variables!\n");
 	directories = ft_split(var, ':');
-	while (*directories != NULL)
+	i = 0;
+	while (directories[i] != NULL)
 	{
-		var = ft_strjoin(*directories, ft_strjoin("/", cmd[0]));
+		var = ft_strjoin_free(directories[i], ft_strjoin("/", cmd[0]));
 		if (access(var, F_OK | X_OK) == 0)
 			return (var);
-		directories++;
+		free(var);
+		i++;
 	}
+	free(directories);
 	return (NULL);
 }
